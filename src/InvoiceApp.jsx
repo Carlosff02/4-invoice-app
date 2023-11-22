@@ -9,10 +9,11 @@ import { TotalView } from "./components/TotalView";
 
 export const InvoiceApp = () => {
 
-    const { total, id, name, client, company, items } = getInvoice();
+    const { total, id, name, client, company, items: itemsInitial } = getInvoice();
     const [productValue, setProductValue] = useState('');
-    const [pricetValue, setPriceValue] = useState(0);
-    const [quantitytValue, setQuantityValue] = useState(0);
+    const [priceValue, setPriceValue] = useState(0);
+    const [quantityValue, setQuantityValue] = useState(0);
+    const [items, setItems] = useState(itemsInitial); 
 
    return (
         <>
@@ -32,26 +33,31 @@ export const InvoiceApp = () => {
 
             <ListItemsView title="Productos de la factura" items={ items }/>
             <TotalView total = { total }/>
-            <form>
+            <form className="w-50" onSubmit={ event => {
+                event.preventDefault();
+
+                setItems([...items, { id: 4, product: productValue, price: priceValue, quantity: quantityValue}])
+            }}>
                 <input 
                 type="text"
                 name="product" 
                 placeholder="Producto" 
                 className="form-control m-3" onChange={ event => {
-                    setProductValue
+                    setProductValue(event.target.value);
                 }}/>
                 <input 
                 type="text"
                 name="price" 
                 placeholder="Precio" className="form-control m-3" onChange={ event => {
-                    setPriceValue
+                    setPriceValue(event.target.value);
                 }}/>
                 <input 
                 type="text"
                 name="quantity" 
                 placeholder="Cantidad" className="form-control m-3" onChange={ event => {
-                    setQuantityValue
+                    setQuantityValue(event.target.value);
                 }}/>
+                <button type="submit" className="btn btn-primary">Crear Item</button>
             </form>
             </div>
             </div>
